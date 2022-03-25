@@ -16,7 +16,7 @@ public class Game {
             switch (move){
                 case 1:
                     dealer.bargain();
-                    System.out.println(String.format("Текущий показатель здоровья %s/%s", hero.getHealth(), hero.getMaxHealth()));
+                    System.out.println(String.format("Текущий показатель здоровья %s/%s / Деньги - %s", hero.getHealth(), hero.getMaxHealth(), hero.getGold()));
                     while (true){
                         int num = scanner.nextInt();
                         if (num != 1 && num != 2 && num != 3){
@@ -34,18 +34,19 @@ public class Game {
                     }
                     break;
                 case 2:
-                    Characters enemy = Math.random() > 0.5 ? new Skeleton("Bob") : new Goblin("Grog");
-                    System.out.println(String.format("Вы зашли в темный лес и встретили там\n%s\n1. Вступить в бой\n2. Спасаться бегством", enemy));
-                        switch (scanner.nextInt()){
+                    while (true) {
+                        Characters enemy = Math.random() > 0.5 ? new Skeleton("Bob") : new Goblin("Grog");
+                        System.out.println(String.format("Вы зашли в темный лес и встретили там\n%s\n1. Вступить в бой\n2. Спасаться бегством", enemy));
+                        switch (scanner.nextInt()) {
                             case 1:
                                 Thread fight = new Battle(hero, enemy);
                                 fight.start();
                                 try {
                                     fight.join();
-                                } catch (InterruptedException e){
+                                } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-                                if (hero.getHealth() <= 0){
+                                if (hero.getHealth() <= 0) {
                                     System.out.println("Ты прошел славный путь на пути к величию! Однако все смертны…");
                                     break outterLoop;
                                 }
@@ -53,6 +54,11 @@ public class Game {
                             default:
                                 continue;
                         }
+                        System.out.println("Каков дальнейший путь?\n1 - Продолжить бой\n2 - Вернуться в город\n");
+                        if (scanner.nextInt() == 1) continue;
+                        break;
+
+                    }
                     break;
                 case 3:
                     System.out.println("Ты прошел славный путь на пути к величию! С нетерпением ждем тебя завтра!");
